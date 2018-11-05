@@ -6,11 +6,7 @@ const app = express();
 const helmet = require('helmet');
 const morgan = require('morgan');
 
-const jwt = require('express-jwt');
-const jwksRsa = require('jwks-rsa');
-
-// the database
-const questions = [];
+// require('https').globalAgent.options.ca = require('ssl-root-cas/latest').create();
 
 
 // enhance your app security with Helmet
@@ -19,49 +15,45 @@ app.use(helmet());
 // use bodyParser to parse application/json content-type
 app.use(bodyParser.json());
 
-app.use(cors());
-
 // log HTTP requests
 app.use(morgan('combined'));
 
+app.use(cors());
 
-const checkJwt = jwt({
-    secret: jwksRsa.expressJwtSecret({
-        cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 5,
-        jwksUri: `https://<YOUR_AUTH0_DOMAIN>/.well-known/jwks.json`
-    }),
+// var selfsigned = require('selfsigned');
+// var attrs = [{ name: 'commonName', value: 'localhost:3030' }];
+// var pems = selfsigned.generate(attrs, { days: 365 });
+// console.log(pems)
 
-    // Validate the audience and the issuer.
-    audience: '<YOUR_AUTH0_CLIENT_ID>',
-    issuer: `https://<YOUR_AUTH0_DOMAIN>/`,
-    algorithms: ['RS256']
+// selfsigned.generate(attrs, { days: 365 }, function (err, pems) {
+//     console.log(pems)
+//   });
+
+//   var pems = selfsigned.generate(null, { clientCertificate: true });
+//   console.log(pems)
+
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0
+
+app.post('/guestidentity',(req, res) => {
+    console.log("Hello from Server") 
+    var client = new Client();
+   
+    // direct way
+    client.post("https://149.129.128.3:5443/wcs/resources/store/1/guestidentity", (data, response) => {
+        res.send({ express: data });
+    });
 });
 
 
-// insert a new question
-app.post('/', checkJwt, (req, res) => {
-    const {title, description} = req.body;
-    const newQuestion = {
-        id: questions.length + 1,
-        title,
-        description,
-        answers: [],
-        author: req.user.name,
-    };
-    questions.push(newQuestion);
-    res.status(200).send();
-});
 
 
 app.get('/topCategory', (req, res) => {
 
     var client = new Client();
 
-// direct way
+    // direct way
     client.get("http://149.129.128.3:3737/search/resources/store/1/categoryview/@top?depthAndLimit=-1,-1,-1,-1", (data, response) => {
-        res.send({express: data});
+        res.send({ express: data });
     });
 });
 
@@ -71,9 +63,9 @@ app.get('/category/:id', (req, res) => {
     console.log(req.params.id)
     var client = new Client();
 
-// direct way
+    // direct way
     client.get("http://149.129.128.3:3737/search/resources/store/1/productview/byCategory/" + id, (data, response) => {
-        res.send({express: data});
+        res.send({ express: data });
     });
 });
 
@@ -83,9 +75,9 @@ app.get('/product/:id', (req, res) => {
     console.log(req.params.id)
     var client = new Client();
 
-// direct way
+    // direct way
     client.get("http://149.129.128.3:3737/search/resources/store/1/productview/byId/" + id, (data, response) => {
-        res.send({express: data});
+        res.send({ express: data });
     });
 });
 
