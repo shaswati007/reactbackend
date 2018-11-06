@@ -54,7 +54,8 @@ app.post('/cart',(req, res) => {
    
     // var args = {
     //     headers: { "Content-Type": "application/json" }
-    // };
+    // }
+   
 
     // direct way
     client.post("https://149.129.128.3:5443/wcs/resources/store/1/cart",(data, response) => {
