@@ -48,21 +48,17 @@ app.post('/guestidentity',(req, res) => {
 
 
 app.post('/cart',(req, res) => {
-    console.log("Hello from Sajjad") 
-    
     var client = new Client();
-   
-    // var args = {
-    //     headers: { "Content-Type": "application/json" }
-    // };
+   var args = {
+       headers:req.body.headers,
+       data:req.body.data
+   };
 
     // direct way
-    client.post("https://149.129.128.3:5443/wcs/resources/store/1/cart",(data, response) => {
+    client.post("https://149.129.128.3:5443/wcs/resources/store/1/cart",args,(data, response) => {
         res.send({ express: data });
-        console.log(data)
     });
 
-    
 });
 
 
