@@ -20,6 +20,7 @@ app.use(morgan('combined'));
 
 app.use(cors());
 
+
 // var selfsigned = require('selfsigned');
 // var attrs = [{ name: 'commonName', value: 'localhost:3030' }];
 // var pems = selfsigned.generate(attrs, { days: 365 });
@@ -43,6 +44,27 @@ app.post('/guestidentity',(req, res) => {
         res.send({ express: data });
     });
 });
+
+
+
+app.post('/cart',(req, res) => {
+    console.log("Hello from Sajjad") 
+    
+    var client = new Client();
+   
+    // var args = {
+    //     headers: { "Content-Type": "application/json" }
+    // };
+
+    // direct way
+    client.post("https://149.129.128.3:5443/wcs/resources/store/1/cart",(data, response) => {
+        res.send({ express: data });
+        console.log(data)
+    });
+
+    
+});
+
 
 
 
