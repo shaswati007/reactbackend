@@ -48,19 +48,12 @@ app.post('/guestidentity',(req, res) => {
 
 
 app.post('/cart',(req, res) => {
-    var client = new Client();
-<<<<<<< HEAD
-   
-    // var args = {
-    //     headers: { "Content-Type": "application/json" }
-    // }
-   
-=======
+    
+   var client = new Client();
    var args = {
        headers:req.body.headers,
        data:req.body.data
    };
->>>>>>> 1be87b18794487830ec54b9a20446a044e353922
 
     // direct way
     client.post("https://149.129.128.3:5443/wcs/resources/store/1/cart",args,(data, response) => {
@@ -68,6 +61,23 @@ app.post('/cart',(req, res) => {
     });
 
 });
+
+
+app.get('/viewCart',(req, res) => {
+    
+    var client = new Client();
+    var args = {
+        headers:req.body.headers
+    };
+ 
+     // direct way
+     client.get("https://149.129.128.3:5443/wcs/resources/store/1/cart/@self ",args,(data, response) => {
+         res.send({ express: data });
+         console.log(data)
+     });
+ 
+ });
+ 
 
 
 
