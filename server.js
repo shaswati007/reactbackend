@@ -63,7 +63,7 @@ app.post('/cart',(req, res) => {
 });
 
 
-app.get('/viewCart',(req, res) => {
+app.post('/viewCart',(req, res) => {
     
     var client = new Client();
     var args = {
